@@ -4,20 +4,378 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="HairSalonWebDataBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityContainer Name="HairSalonWebDataBaseModelStoreContainer" />
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="HairSalonWebDataBaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="PhoneNumber" Type="nvarchar" MaxLength="20" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="4000" />
+        </EntityType>
+        <EntityType Name="IncomeMaterial">
+          <Key>
+            <PropertyRef Name="IncomeMaterialId" />
+          </Key>
+          <Property Name="IncomeMaterialId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IncomeMaterialHeadId" Type="int" Nullable="false" />
+          <Property Name="IncomeMaterialBodyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IncomeMaterialBody">
+          <Key>
+            <PropertyRef Name="IncomeMaterialBodyId" />
+          </Key>
+          <Property Name="IncomeMaterialBodyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Count" Type="numeric" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PurchaseCost" Type="money" Nullable="false" />
+          <Property Name="RetailCost" Type="money" Nullable="false" />
+          <Property Name="MaterialTypeId" Type="int" Nullable="false" />
+          <Property Name="BrandId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IncomeMaterialHead">
+          <Key>
+            <PropertyRef Name="IncomeMaterialHeadId" />
+          </Key>
+          <Property Name="IncomeMaterialHeadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="InvoiceNumber" Type="int" Nullable="false" />
+          <Property Name="IncomeDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MaterialType">
+          <Key>
+            <PropertyRef Name="MaterialTypeId" />
+          </Key>
+          <Property Name="MaterialTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="WorkerId" />
+          </Key>
+          <Property Name="WorkerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_IncomeMaterial_IncomeMaterialBody">
+          <End Role="IncomeMaterialBody" Type="Self.IncomeMaterialBody" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IncomeMaterial" Type="Self.IncomeMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncomeMaterialBody">
+              <PropertyRef Name="IncomeMaterialBodyId" />
+            </Principal>
+            <Dependent Role="IncomeMaterial">
+              <PropertyRef Name="IncomeMaterialBodyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterial_IncomeMaterialHead">
+          <End Role="IncomeMaterialHead" Type="Self.IncomeMaterialHead" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IncomeMaterial" Type="Self.IncomeMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncomeMaterialHead">
+              <PropertyRef Name="IncomeMaterialHeadId" />
+            </Principal>
+            <Dependent Role="IncomeMaterial">
+              <PropertyRef Name="IncomeMaterialHeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterialBody_Brand">
+          <End Role="Brand" Type="Self.Brand" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IncomeMaterialBody" Type="Self.IncomeMaterialBody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="IncomeMaterialBody">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterialBody_MaterialType">
+          <End Role="MaterialType" Type="Self.MaterialType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IncomeMaterialBody" Type="Self.IncomeMaterialBody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaterialType">
+              <PropertyRef Name="MaterialTypeId" />
+            </Principal>
+            <Dependent Role="IncomeMaterialBody">
+              <PropertyRef Name="MaterialTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HairSalonWebDataBaseModelStoreContainer">
+          <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncomeMaterial" EntityType="Self.IncomeMaterial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncomeMaterialBody" EntityType="Self.IncomeMaterialBody" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IncomeMaterialHead" EntityType="Self.IncomeMaterialHead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaterialType" EntityType="Self.MaterialType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Worker" EntityType="Self.Worker" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_IncomeMaterial_IncomeMaterialBody" Association="Self.FK_IncomeMaterial_IncomeMaterialBody">
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+            <End Role="IncomeMaterial" EntitySet="IncomeMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterial_IncomeMaterialHead" Association="Self.FK_IncomeMaterial_IncomeMaterialHead">
+            <End Role="IncomeMaterialHead" EntitySet="IncomeMaterialHead" />
+            <End Role="IncomeMaterial" EntitySet="IncomeMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterialBody_Brand" Association="Self.FK_IncomeMaterialBody_Brand">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterialBody_MaterialType" Association="Self.FK_IncomeMaterialBody_MaterialType">
+            <End Role="MaterialType" EntitySet="MaterialType" />
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="HairSalonWebDataBaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="HairSalonWebDataBaseEntities" annotation:LazyLoadingEnabled="true" />
+        <EntityContainer Name="HairSalonWebDataBaseEntities" annotation:LazyLoadingEnabled="true" >
+          <EntitySet Name="Client" EntityType="HairSalonWebDataBaseModel.Client" />
+          <EntitySet Name="Worker" EntityType="HairSalonWebDataBaseModel.Worker" />
+          <EntitySet Name="Brand" EntityType="HairSalonWebDataBaseModel.Brand" />
+          <EntitySet Name="IncomeMaterial" EntityType="HairSalonWebDataBaseModel.IncomeMaterial" />
+          <EntitySet Name="IncomeMaterialBody" EntityType="HairSalonWebDataBaseModel.IncomeMaterialBody" />
+          <EntitySet Name="IncomeMaterialHead" EntityType="HairSalonWebDataBaseModel.IncomeMaterialHead" />
+          <EntitySet Name="MaterialType" EntityType="HairSalonWebDataBaseModel.MaterialType" />
+          <AssociationSet Name="FK_IncomeMaterialBody_Brand" Association="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_Brand">
+            <End Role="Brand" EntitySet="Brand" />
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterial_IncomeMaterialBody" Association="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialBody">
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+            <End Role="IncomeMaterial" EntitySet="IncomeMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterial_IncomeMaterialHead" Association="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialHead">
+            <End Role="IncomeMaterialHead" EntitySet="IncomeMaterialHead" />
+            <End Role="IncomeMaterial" EntitySet="IncomeMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IncomeMaterialBody_MaterialType" Association="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_MaterialType">
+            <End Role="MaterialType" EntitySet="MaterialType" />
+            <End Role="IncomeMaterialBody" EntitySet="IncomeMaterialBody" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="ClientId" />
+          </Key>
+          <Property Name="ClientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="MiddleName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Comment" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Worker">
+          <Key>
+            <PropertyRef Name="WorkerId" />
+          </Key>
+          <Property Name="WorkerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Surname" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Brand">
+          <Key>
+            <PropertyRef Name="BrandId" />
+          </Key>
+          <Property Name="BrandId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IncomeMaterialBody" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_Brand" FromRole="Brand" ToRole="IncomeMaterialBody" />
+        </EntityType>
+        <EntityType Name="IncomeMaterial">
+          <Key>
+            <PropertyRef Name="IncomeMaterialId" />
+          </Key>
+          <Property Name="IncomeMaterialId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IncomeMaterialHeadId" Type="Int32" Nullable="false" />
+          <Property Name="IncomeMaterialBodyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IncomeMaterialBody" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialBody" FromRole="IncomeMaterial" ToRole="IncomeMaterialBody" />
+          <NavigationProperty Name="IncomeMaterialHead" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialHead" FromRole="IncomeMaterial" ToRole="IncomeMaterialHead" />
+        </EntityType>
+        <EntityType Name="IncomeMaterialBody">
+          <Key>
+            <PropertyRef Name="IncomeMaterialBodyId" />
+          </Key>
+          <Property Name="IncomeMaterialBodyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Count" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+          <Property Name="PurchaseCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="RetailCost" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="MaterialTypeId" Type="Int32" Nullable="false" />
+          <Property Name="BrandId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_Brand" FromRole="IncomeMaterialBody" ToRole="Brand" />
+          <NavigationProperty Name="IncomeMaterial" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialBody" FromRole="IncomeMaterialBody" ToRole="IncomeMaterial" />
+          <NavigationProperty Name="MaterialType" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_MaterialType" FromRole="IncomeMaterialBody" ToRole="MaterialType" />
+        </EntityType>
+        <EntityType Name="IncomeMaterialHead">
+          <Key>
+            <PropertyRef Name="IncomeMaterialHeadId" />
+          </Key>
+          <Property Name="IncomeMaterialHeadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="InvoiceNumber" Type="Int32" Nullable="false" />
+          <Property Name="IncomeDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="IncomeMaterial" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialHead" FromRole="IncomeMaterialHead" ToRole="IncomeMaterial" />
+        </EntityType>
+        <EntityType Name="MaterialType">
+          <Key>
+            <PropertyRef Name="MaterialTypeId" />
+          </Key>
+          <Property Name="MaterialTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="IncomeMaterialBody" Relationship="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_MaterialType" FromRole="MaterialType" ToRole="IncomeMaterialBody" />
+        </EntityType>
+        <Association Name="FK_IncomeMaterialBody_Brand">
+          <End Type="HairSalonWebDataBaseModel.Brand" Role="Brand" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterialBody" Role="IncomeMaterialBody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="BrandId" />
+            </Principal>
+            <Dependent Role="IncomeMaterialBody">
+              <PropertyRef Name="BrandId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterial_IncomeMaterialBody">
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterialBody" Role="IncomeMaterialBody" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterial" Role="IncomeMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncomeMaterialBody">
+              <PropertyRef Name="IncomeMaterialBodyId" />
+            </Principal>
+            <Dependent Role="IncomeMaterial">
+              <PropertyRef Name="IncomeMaterialBodyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterial_IncomeMaterialHead">
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterialHead" Role="IncomeMaterialHead" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterial" Role="IncomeMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IncomeMaterialHead">
+              <PropertyRef Name="IncomeMaterialHeadId" />
+            </Principal>
+            <Dependent Role="IncomeMaterial">
+              <PropertyRef Name="IncomeMaterialHeadId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IncomeMaterialBody_MaterialType">
+          <End Type="HairSalonWebDataBaseModel.MaterialType" Role="MaterialType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="HairSalonWebDataBaseModel.IncomeMaterialBody" Role="IncomeMaterialBody" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MaterialType">
+              <PropertyRef Name="MaterialTypeId" />
+            </Principal>
+            <Dependent Role="IncomeMaterialBody">
+              <PropertyRef Name="MaterialTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="HairSalonWebDataBaseModelStoreContainer" CdmEntityContainer="HairSalonWebDataBaseEntities" />
+        <EntityContainerMapping StorageEntityContainer="HairSalonWebDataBaseModelStoreContainer" CdmEntityContainer="HairSalonWebDataBaseEntities" >
+          <EntitySetMapping Name="Client">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Worker">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.Worker">
+              <MappingFragment StoreEntitySet="Worker">
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Brand">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.Brand">
+              <MappingFragment StoreEntitySet="Brand">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncomeMaterial">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.IncomeMaterial">
+              <MappingFragment StoreEntitySet="IncomeMaterial">
+                <ScalarProperty Name="IncomeMaterialBodyId" ColumnName="IncomeMaterialBodyId" />
+                <ScalarProperty Name="IncomeMaterialHeadId" ColumnName="IncomeMaterialHeadId" />
+                <ScalarProperty Name="IncomeMaterialId" ColumnName="IncomeMaterialId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncomeMaterialBody">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.IncomeMaterialBody">
+              <MappingFragment StoreEntitySet="IncomeMaterialBody">
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="MaterialTypeId" ColumnName="MaterialTypeId" />
+                <ScalarProperty Name="RetailCost" ColumnName="RetailCost" />
+                <ScalarProperty Name="PurchaseCost" ColumnName="PurchaseCost" />
+                <ScalarProperty Name="Count" ColumnName="Count" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IncomeMaterialBodyId" ColumnName="IncomeMaterialBodyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IncomeMaterialHead">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.IncomeMaterialHead">
+              <MappingFragment StoreEntitySet="IncomeMaterialHead">
+                <ScalarProperty Name="IncomeDate" ColumnName="IncomeDate" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="InvoiceNumber" />
+                <ScalarProperty Name="IncomeMaterialHeadId" ColumnName="IncomeMaterialHeadId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaterialType">
+            <EntityTypeMapping TypeName="HairSalonWebDataBaseModel.MaterialType">
+              <MappingFragment StoreEntitySet="MaterialType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MaterialTypeId" ColumnName="MaterialTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

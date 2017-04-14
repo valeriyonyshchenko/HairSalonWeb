@@ -4,7 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6688678c91174ee8ae0c8ef4e5805ec9" Name="Diagram1" />
+      <Diagram DiagramId="6688678c91174ee8ae0c8ef4e5805ec9" Name="Diagram1" >
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.Client" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.Worker" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.Brand" Width="1.5" PointX="3.375" PointY="7.875" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.IncomeMaterial" Width="1.5" PointX="7.875" PointY="4.625" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.IncomeMaterialBody" Width="1.5" PointX="5.625" PointY="4.125" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.IncomeMaterialHead" Width="1.5" PointX="5.625" PointY="0.75" />
+        <EntityTypeShape EntityType="HairSalonWebDataBaseModel.MaterialType" Width="1.5" PointX="3.375" PointY="4.875" />
+        <AssociationConnector Association="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_Brand" />
+        <AssociationConnector Association="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialBody" />
+        <AssociationConnector Association="HairSalonWebDataBaseModel.FK_IncomeMaterial_IncomeMaterialHead" />
+        <AssociationConnector Association="HairSalonWebDataBaseModel.FK_IncomeMaterialBody_MaterialType" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

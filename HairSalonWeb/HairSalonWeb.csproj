@@ -198,8 +198,18 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BrandsController.cs" />
+    <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MaterialTypesController.cs" />
+    <Compile Include="Controllers\WorkersController.cs" />
+    <Compile Include="DataBase\Brand.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Client.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DataBase\HairSalonWebModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -214,6 +224,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>HairSalonWebModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\IncomeMaterial.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\IncomeMaterialBody.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\IncomeMaterialHead.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\MaterialType.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DataBase\Worker.cs">
+      <DependentUpon>HairSalonWebModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -305,6 +330,26 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Workers\Create.cshtml" />
+    <Content Include="Views\Workers\Delete.cshtml" />
+    <Content Include="Views\Workers\Details.cshtml" />
+    <Content Include="Views\Workers\Edit.cshtml" />
+    <Content Include="Views\Workers\Index.cshtml" />
+    <Content Include="Views\Clients\Create.cshtml" />
+    <Content Include="Views\Clients\Delete.cshtml" />
+    <Content Include="Views\Clients\Details.cshtml" />
+    <Content Include="Views\Clients\Edit.cshtml" />
+    <Content Include="Views\Clients\Index.cshtml" />
+    <Content Include="Views\Brands\Create.cshtml" />
+    <Content Include="Views\Brands\Delete.cshtml" />
+    <Content Include="Views\Brands\Details.cshtml" />
+    <Content Include="Views\Brands\Edit.cshtml" />
+    <Content Include="Views\Brands\Index.cshtml" />
+    <Content Include="Views\MaterialTypes\Create.cshtml" />
+    <Content Include="Views\MaterialTypes\Delete.cshtml" />
+    <Content Include="Views\MaterialTypes\Details.cshtml" />
+    <Content Include="Views\MaterialTypes\Edit.cshtml" />
+    <Content Include="Views\MaterialTypes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

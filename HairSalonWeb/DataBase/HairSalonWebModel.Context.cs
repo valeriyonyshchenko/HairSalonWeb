@@ -25,5 +25,12 @@ namespace HairSalonWeb.DataBase
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<Worker> Worker { get; set; }
+        public virtual DbSet<Brand> Brand { get; set; }
+        public virtual DbSet<IncomeMaterial> IncomeMaterial { get; set; }
+        public virtual DbSet<IncomeMaterialBody> IncomeMaterialBody { get; set; }
+        public virtual DbSet<IncomeMaterialHead> IncomeMaterialHead { get; set; }
+        public virtual DbSet<MaterialType> MaterialType { get; set; }
     }
 }
