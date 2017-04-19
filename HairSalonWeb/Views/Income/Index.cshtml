@@ -1,0 +1,166 @@
+﻿@model HairSalonWeb.Models.IncomeModel
+
+@{
+    ViewBag.Title = "title";
+}
+
+@Scripts.Render("~/bundles/jquery")
+
+<style>
+    #headTable tr {
+    cursor: pointer;
+}
+</style>
+
+<h2>title</h2>
+
+<table style="table-layout: fixed; width: 100%">
+    <tr>
+        <td style="vertical-align: top; width: 30%">
+            <p>
+                @Html.ActionLink("Create New", "CreateHead")
+            </p>
+            <table class="table" id="headTable">
+                <script type="text/javascript">
+                    $(function () {
+                        var tr = $('#headTable tr');
+
+                        tr.bind('click', function (event) {
+                            var id = $(this).attr("id");
+                            if (id === "header") return;
+
+                            var url = '@Url.Action("Index", "Income", new {id = -1})';
+                            url = url.replace('-1', id);
+
+                            var useAjax = true;
+
+                            if (useAjax) {
+                                $.ajax({
+                                    url: url,
+                                    dataType: "html",
+                                    type: "GET",
+                                    contentType: 'application/json; charset=utf-8',
+                                    async: true,
+                                    processData: false,
+                                    cache: false,
+                                    success: function (data) {
+                                        var headTable = $(data).find('table[id=headTable]');
+                                        $('#headTable').html(headTable);
+
+                                        var bodyTable = $(data).find('table[id=bodyTable]');
+                                        $('#bodyTable').html(bodyTable);
+
+                                    },
+                                    error: function (xhr) {
+                                        console.error('can`t send ajax to controller');
+                                    }
+                                });
+                            } else {
+                                window.location.href = url;
+                            }
+                        });
+                    });
+                </script>
+
+                <tr id="header">
+                    <th>
+                        InvoiceNumber
+                    </th>
+                    <th>
+                        IncomeDate
+                    </th>
+                    <th></th>
+                </tr>
+                @if (Model?.Head != null)
+                {
+                    foreach (var item in Model.Head)
+                    {
+                        var selectedRow = "";
+                        if (item.IncomeMaterialHeadId == ViewBag.HeadId)
+                        {
+                            selectedRow = "success";
+                        }
+                        <tr class="@selectedRow" id="@item.IncomeMaterialHeadId">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.InvoiceNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IncomeDate)
+                            </td>
+                            <td>
+                                @*@Html.ActionLink("Select", "Index", new {id = item.IncomeMaterialHeadId})
+                                    <br/>*@
+                                @Html.ActionLink("Edit", "EditHead", new { id = item.IncomeMaterialHeadId })
+                                <br />
+                                @Html.ActionLink("Details", "DetailsHead", new { id = item.IncomeMaterialHeadId })
+                                <br />
+                                @Html.ActionLink("Delete", "DeleteHead", new { id = item.IncomeMaterialHeadId })
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </td>
+        <td style="vertical-align: top; width: 70%">
+            <p>
+                @Html.ActionLink("Create New", "CreateBody")
+            </p>
+            <table class="table" id="bodyTable">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Count
+                    </th>
+                    <th>
+                        PurchaseCost
+                    </th>
+                    <th>
+                        RetailCost
+                    </th>
+                    <th>
+                        Brand.Name
+                    </th>
+                    <th>
+                        MaterialType.Name
+                    </th>
+                    <th></th>
+                </tr>
+                @if (Model?.Body != null)
+            {
+                foreach (var item in Model.Body)
+                {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Count)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PurchaseCost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RetailCost)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Brand.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.MaterialType.Name)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edit", "EditBody", new { id = item.IncomeMaterialBodyId })
+                                <br />
+                                @Html.ActionLink("Details", "DetailsBody", new { id = item.IncomeMaterialBodyId })
+                                <br />
+                                @Html.ActionLink("Delete", "DeleteBody", new { id = item.IncomeMaterialBodyId })
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </td>
+    </tr>
+</table>

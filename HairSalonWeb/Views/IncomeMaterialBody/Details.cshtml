@@ -1,0 +1,66 @@
+﻿@model HairSalonWeb.DataBase.IncomeMaterialBody
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>IncomeMaterialBody</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Count)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Count)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PurchaseCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PurchaseCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RetailCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RetailCost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brand.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brand.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaterialType.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaterialType.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.IncomeMaterialBodyId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
