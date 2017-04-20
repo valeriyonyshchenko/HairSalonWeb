@@ -23,14 +23,25 @@
             <table class="table" id="headTable">
                 <script type="text/javascript">
                     $(function () {
-                        var tr = $('#headTable tr');
+                        function getParameterByName(name, url) {
+                            if (!url) url = window.location.href;
+                            name = name.replace(/[\[\]]/g, "\\$&");
+                            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                                results = regex.exec(url);
+                            if (!results) return null;
+                            if (!results[2]) return '';
+                            return decodeURIComponent(results[2].replace(/\+/g, " "));
+                        }
 
+                        var tr = $('#headTable tr');
                         tr.bind('click', function (event) {
                             var id = $(this).attr("id");
                             if (id === "header") return;
 
-                            var url = '@Url.Action("Index", "Income", new {id = -1})';
-                            url = url.replace('-1', id);
+                            var sortOrder = getParameterByName('sortOrder');
+                            var url = '@Url.Action("Index", "Income", new {id = -1, sortOrder = -2})';
+                            url = url.replace('-1', id).replace('-2', sortOrder);
+                            document.location = url;
 
                             var useAjax = true;
 
@@ -64,22 +75,22 @@
 
                 <tr id="header">
                     <th>
-                        InvoiceNumber
+                        @Html.ActionLink("InvoiceNumber", "Index", new { sortOrder = ViewBag.InvoiceNumberSortParm })
                     </th>
                     <th>
-                        IncomeDate
+                        @Html.ActionLink("IncomeDate", "Index", new { sortOrder = ViewBag.IncomeDateSortParm })
                     </th>
-                    <th></th>
+                    <th ></th>
                 </tr>
-                @if (Model?.Head != null)
+                @if(Model?.Head != null)
                 {
-                    foreach (var item in Model.Head)
-                    {
-                        var selectedRow = "";
-                        if (item.IncomeMaterialHeadId == ViewBag.HeadId)
-                        {
-                            selectedRow = "success";
-                        }
+                                foreach (var item in Model.Head)
+                                {
+                                    var selectedRow = "";
+                                    if (item.IncomeMaterialHeadId == ViewBag.HeadId)
+                                    {
+                                        selectedRow = "success";
+                                    }
                         <tr class="@selectedRow" id="@item.IncomeMaterialHeadId">
                             <td>
                                 @Html.DisplayFor(modelItem => item.InvoiceNumber)

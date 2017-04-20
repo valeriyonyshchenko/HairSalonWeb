@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using HairSalonWeb.DataBase;
 using HairSalonWeb.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace HairSalonWeb.Controllers
 {
@@ -11,11 +12,35 @@ namespace HairSalonWeb.Controllers
     {
         private HairSalonWebDataBaseEntities db = new HairSalonWebDataBaseEntities();
 
-        public ActionResult Index(int? id)
+        public ActionResult Index(int? id, string sortOrder)
         {
+                ViewBag.InvoiceNumberSortParm = sortOrder == "InvoiceNumber" ? "InvoiceNumber_desc" : "InvoiceNumber";
+                ViewBag.IncomeDateSortParm = sortOrder == "IncomeDate" ? "IncomeDate_desc" : "IncomeDate";
+
+            var head = db.IncomeMaterialHead.ToList();
+
+            switch (sortOrder)
+            {
+                case "InvoiceNumber":
+                    head = head.OrderBy(x => x.InvoiceNumber).ToList();
+                    break;
+                case "InvoiceNumber_desc":
+                    head = head.OrderByDescending(x => x.InvoiceNumber).ToList();
+                    break;
+                case "IncomeDate":
+                    head = head.OrderBy(x => x.IncomeDate).ToList();
+                    break;
+                //case "IncomeDate_desc":
+                //    head = head.OrderByDescending(x => x.IncomeDate).ToList();
+                //    break;
+                default:
+                    head = head.OrderBy(x => x.InvoiceNumber).ToList();
+                    break;
+            }
+
             var model = new IncomeModel
             {
-                Head = db.IncomeMaterialHead.ToList()
+                Head = head
             };
 
             if (id != null)
